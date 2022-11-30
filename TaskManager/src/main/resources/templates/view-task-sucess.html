@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Identificador Língua</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/style.css">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+</head>
+<body>
+<div class="content">
+  <!-- Nav pills -->
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#FirstMenu">Identificar Língua</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#SecondMenu">Estado Tarefa</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div id="FirstMenu" class="container tab-pane fade">
+      <form action="#" th:action="@{/addtask}" th:object="${taskDTO}"
+            method="post">
+        <div class="form-group">
+          <label for="InputURL" action="#" method="post">URL</label>
+          <input oninput="handleChange()" autocomplete="off"  type="url" class="form-control" th:field="*{url}"
+                 required="required" id="InputURL" placeholder="http://www.exemplo.pt"  maxlength="500" >
+          <small id="urlhelp" class="form-text text-muted">Introduza o URL a ser identificado pela aplicação</small>
+        </div>
+        <button id="submit-button" type="submit" class="btn btn-dark">Submeter</button>
+        <div id="errorMsg" class="alert alert-dark fade show" role="alert">
+          <p>Limite máximo de 500 caracteres atingido.</p>
+        </div>
+      </form>
+    </div>
+    <div id="SecondMenu" class="container tab-pane active">
+      <form action="#" th:action="@{/viewtask}" th:object="${taskDTO}"
+            method="post">
+        <div class="form-group">
+          <label for="InputTaskId">Id Tarefa</label>
+          <input autocomplete="off" required="required" type="number" class="form-control" th:field="*{taskId}" id="InputTaskId" placeholder="1234"
+                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                 maxlength="9">
+          <small id="emailHelp" class="form-text text-muted">Introduza o id da tarefa a pesquisar</small>
+        </div>
+        <button type="submit" class="btn btn-dark">Submeter</button>
+        <div class="results" th:if="${taskDTO.taskId != null}">
+          <p><b>Id Tarefa: </b><span th:text="${taskDTO.taskId}"> </span></p>
+          <p><b>URL: </b><span id="urlInputBox" th:text="${taskDTO.url}"> </span></p>
+          <p><b>Estado: </b><span th:text="${taskDTO.status}"> </span></p>
+          <div th:if="${taskDTO.status == 'Cancelada'}">
+            <p><b>Motivo: </b><span th:text="${taskDTO.cancelationCause}"> </span></p>
+          </div>
+          <div th:if="${taskDTO.languageCode != null}">
+            <p><b>Língua: </b><span th:text="${taskDTO.languagePT}"> </span></p>
+          </div>
+        </div>
+        <div class="results" th:if="${taskDTO.taskId == null}">
+          <div class="alert alert-dark alert-dismissible fade show" role="alert">
+            <p>Não existe nenhuma tarefa com o id introduzido !</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Additional Scripts -->
+<script src="/script.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+</body>
+</html>
